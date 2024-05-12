@@ -31,17 +31,16 @@
                 tooltip: true,
                 nextSelector: "#next",
                 previousSelector: "#previous",
-                considerMissingDataAsZero: false,
-                legend: [25, 50, 65, 80], // Redefining the legend thresholds
+                considerMissingDataAsZero: true,
+                legend: [1], // Only show legend for value 1
                 legendColors: {
                     min: "#ebedf0",
-                    base: "#ebedf0",
-                    colors: ["#ebedf0","#c6e48b", "#7bc96f", "#239a3b", "#196127"], // Adjusted color steps for clarity
+                    max: "#196127",
                     empty: "#ebedf0"
                 },
                 subDomainTitleFormat: {
-                    empty: "{date}", // Display only the date for empty data cells
-                    filled: "{count}% on {date}" // Custom format to show percentage
+                    empty: "No task on {date}", // Custom format for empty cells
+                    filled: "Tasks completed on {date}" // Custom format for filled cells
                 },
                 afterLoadData: function(data) {
                     if (!data) {
@@ -52,7 +51,7 @@
                     var result = {};
                     data.forEach(function(item) {
                         var date = new Date(item.date).getTime() / 1000;
-                        result[date] = item.progress;
+                        result[date] = item.count; // Use the count value
                     });
                     return result;
                 }
