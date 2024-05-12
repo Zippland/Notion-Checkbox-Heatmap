@@ -5,7 +5,8 @@
 [English Readme](README_EN.md)
 
 ## One-Click Deployment
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FZippland%2FNotion-Progress-Heatmap&env=ENV_DATABASE_ID&env=ENV_NOTION_TOKEN&project-name=notion-progress-heatmap&repository-name=notion-progress-heatmap)
+[![Vercel一键部署](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FZippland%2FNotion-Progress-Heatmap&env=ENV_DATABASE_ID&env=ENV_NOTION_TOKEN&env=ENV_CHECKBOX_PROPERTY_NAME&project-name=notion-progress-heatmap&repository-name=notion-progress-heatmap)
+
 
 ## Project Overview
 
