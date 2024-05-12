@@ -5,7 +5,7 @@ dotenv.config();
 export default async (req, res) => {
     const token = process.env.ENV_NOTION_TOKEN;
     const databaseId = process.env.ENV_DATABASE_ID;
-    const checkboxPropertyName = process.env.ENV_CHECKBOX_PROPERTY_NAME;
+    const checkboxName = process.env.ENV_CHECKBOX_PROPERTY_NAME;  // Name of the checkbox property
 
     try {
         const response = await fetch(`https://api.notion.com/v1/databases/${databaseId}/query`, {
@@ -22,7 +22,7 @@ export default async (req, res) => {
             throw new Error(`Notion API error: ${response.status} ${JSON.stringify(data)}`);
         }
 
-        const processedData = processData(data.results, checkboxPropertyName);
+        const processedData = processData(data.results, checkboxName);
         res.json(processedData);
     } catch (error) {
         console.error("Error processing request:", error);
@@ -30,22 +30,19 @@ export default async (req, res) => {
     }
 };
 
-const processData = (data, checkboxPropertyName) => {
-    const results = [];
+const processData = (data, checkboxName) => {
+    const checkboxMap = new Map();
 
     data.forEach(item => {
-        // 假设日期存在于 properties 的 Date 属性中，需要根据你的实际数据结构调整
-        const date = item.properties["Date"]?.date?.start;
-        const checkboxValue = item.properties[checkboxPropertyName]?.checkbox;
-        // 只处理 checkboxValue 为 true 的情况
-        if (date && checkboxValue) {
-            results.push({
-                date: date,
-                checked: 1 // 因为我们只关心勾选的情况，直接设置为1
-            });
+        if (item.properties.Date && item.properties[checkboxName]) {
+            if (item.properties[checkboxName].checkbox) {  // Check if the checkbox is true
+                const dateObject = new Date(item.properties.Date.created_time);
+                dateObject.setDate(dateObject.getDate() + 1); // Add one day to the date
+                const date = dateObject.toISOString().split('T')[0]; // Format back to YYYY-MM-DD
+                checkboxMap.set(date, item.properties[checkboxName].checkbox);
+            }
         }
     });
 
-    return results;
+    return Array.from(checkboxMap).map(([date, isChecked]) => ({ date, isChecked }));
 };
-
