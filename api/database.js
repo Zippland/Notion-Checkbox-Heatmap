@@ -31,21 +31,21 @@ export default async (req, res) => {
 };
 
 const processData = (data, checkboxPropertyName) => {
-    const checkboxMap = {
-        checked: 0,
-        unchecked: 0
-    };
+    const results = [];
 
     data.forEach(item => {
+        // 假设日期存在于 properties 的 Date 属性中，需要根据你的实际数据结构调整
+        const date = item.properties["Date"]?.date?.start;
         const checkboxValue = item.properties[checkboxPropertyName]?.checkbox;
-        if (checkboxValue !== undefined && checkboxValue !== 0) {
-            if (checkboxValue) {
-                checkboxMap.checked += 1;
-            } else {
-                checkboxMap.unchecked += 1;
-            }
+        // 只处理 checkboxValue 为 true 的情况
+        if (date && checkboxValue) {
+            results.push({
+                date: date,
+                checked: 1 // 因为我们只关心勾选的情况，直接设置为1
+            });
         }
     });
 
-    return checkboxMap;
+    return results;
 };
+
