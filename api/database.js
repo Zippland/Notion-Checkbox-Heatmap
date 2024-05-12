@@ -38,7 +38,7 @@ const processData = (data, checkboxPropertyName) => {
 
     data.forEach(item => {
         const checkboxValue = item.properties[checkboxPropertyName]?.checkbox;
-        if (checkboxValue !== undefined) {
+        if (checkboxValue !== undefined && checkboxValue !== 0) {
             if (checkboxValue) {
                 checkboxMap.checked += 1;
             } else {
