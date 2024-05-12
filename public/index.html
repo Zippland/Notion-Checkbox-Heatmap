@@ -43,15 +43,15 @@
                     filled: "Tasks completed on {date}" // Custom format for filled cells
                 },
                 afterLoadData: function(data) {
-                    if (!data) {
-                        console.error('No data received');
+                    if (!data || !Array.isArray(data)) {
+                        console.error('Invalid or no data received');
                         return {};
                     }
-
+                
                     var result = {};
                     data.forEach(function(item) {
                         var date = new Date(item.date).getTime() / 1000;
-                        result[date] = item.count; // Use the count value
+                        result[date] = item.checked; // Use the checked value
                     });
                     return result;
                 }
