@@ -24,7 +24,7 @@
                 itemSelector: "#cal-heatmap",
                 domain: "month",
                 subDomain: "day",
-                data: baseUrl + "/api/database", // 更新为指向无服务器函数的URL
+                data: baseUrl + "/api/database", // URL pointing to your serverless function
                 start: new Date(new Date().getFullYear(), new Date().getMonth() - 5),
                 cellSize: 10,
                 range: 6,
@@ -32,31 +32,32 @@
                 nextSelector: "#next",
                 previousSelector: "#previous",
                 considerMissingDataAsZero: false,
-                legend: [1], // Only show legend for value 1
+                legend: [1], // Legend for non-empty values
                 legendColors: {
                     min: "#ebedf0",
-                    max: "#196127",
+                    max: "#7bc96f",
                     empty: "#ebedf0"
                 },
                 subDomainTitleFormat: {
-                    empty: "No task on {date}", // Custom format for empty cells
-                    filled: "Tasks completed on {date}" // Custom format for filled cells
+                    empty: "{date}", // Display only the date for empty data cells
+                    filled: "{count}% on {date}" // Custom format to show percentage
                 },
                 afterLoadData: function(data) {
-                    if (!data || !Array.isArray(data)) {
-                        console.error('Invalid or no data received');
+                    if (!data) {
+                        console.error('No data received');
                         return {};
                     }
-                
+            
                     var result = {};
                     data.forEach(function(item) {
                         var date = new Date(item.date).getTime() / 1000;
-                        result[date] = item.checked; // Use the checked value
+                        // Set 1 for any non-zero value to utilize the legend [1]
+                        result[date] = item.isChecked ? 1 : 0;
                     });
                     return result;
                 }
             });
-        
+
             // 设置定时器每30秒刷新数据
             setInterval(function() {
                 cal.update(baseUrl + "/api/database"); // 更新为指向无服务器函数的URL
