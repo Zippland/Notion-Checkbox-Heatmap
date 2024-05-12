@@ -47,7 +47,7 @@ Notion 进度热图项目是一个基于 Notion API 和 Vercel 平台的云端�
 ### 一、准备工作
 
 1. **注册 Notion 账号**：如果还没有 Notion 账号，请先在 [Notion 官网](https://www.notion.so/) 注册一个账号。
-2. **创建 Notion 数据库**：创建一个至少包含`Date`和`Progress`两个属性的任务表，`Date`属性用于记录每天的日期，`Progress`用来表示当天的任务完成率（数值区间为0-1）。
+2. **创建 Notion 数据库**：创建一个包含`Date`和属性的任务表，`Date`属性用于记录每天的日期，还需要你自定义的任务名称（Checkbox属性）。
 3. **获取 Notion API 密钥**：为了让应用能够访问 Notion 数据库，你需要创建一个集成并获取相应的密钥。进入 Notion 设置中的“Integration”部分，创建一个新的集成并记录下生成的“内部集成令牌”（Internal Integration Token）。
 4. **获取数据库ID**：在你的 Notion 数据库页面的URL中，复制“`https://www.notion.so/`”后面的部分（直到`?`，不包括`?`)，这部分URL是你的数据库ID。
 
@@ -58,6 +58,7 @@ Notion 进度热图项目是一个基于 Notion API 和 Vercel 平台的云端�
 3. **配置环境变量**：在 Vercel 项目的设置中找到“Environment Variables”部分，添加以下两个变量：
    - `ENV_NOTION_TOKEN`：你的 Notion 内部集成令牌。
    - `ENV_DATABASE_ID`：你的 Notion 数据库ID。
+   - `ENV_CHECKBOX_PROPERTY_NAME`：你的自定义任务名。
 4. **部署项目**：完成环境变量配置后，回到项目仪表板，点击“Deploy”按钮，Vercel 会自动部署你的应用。
 
 ### 三、访问和使用
